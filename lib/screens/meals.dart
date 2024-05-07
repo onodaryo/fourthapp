@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:meal/data/dummyData.dart';
 
+import 'package:meal/data/dummyData.dart';
 import 'package:meal/models/meal.dart';
+import 'package:meal/screens/mealExplain.dart';
 import 'package:meal/widgets/mealItem.dart';
 
 class MealScreen extends StatelessWidget {
@@ -10,6 +11,10 @@ class MealScreen extends StatelessWidget {
 
   final String title;
   final List<Meal> meals;
+
+  void selectMeal(BuildContext context, Meal meal){
+    Navigator.push(context, MaterialPageRoute(builder: (ctx) => MealExplainScreen(meal: meal)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +35,15 @@ class MealScreen extends StatelessWidget {
         Text('Try selecting a different category',
             style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
-                ))
+                ),
+        )
       ]),
     );
 
     if (meals.isNotEmpty) {
       content = ListView.builder(
         itemCount: meals.length,
-        itemBuilder: (ctx, index) => MealItem(meal: meals[index]),
+        itemBuilder: (ctx, index) => MealItem(meal: meals[index], onSelectMeal: selectMeal),
       );
     }
     return Scaffold(
